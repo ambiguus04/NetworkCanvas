@@ -5,5 +5,3 @@ import random
 from NCController import controller
 
 c = controller.Controller()
-
-print('pk')

@@ -1,14 +1,17 @@
-class View(graph_tool.GraphWindow):
+from gi.repository import Gtk, Gdk, GdkPixbuf, GObject
+import graph_tool as gt
+
+class View(gt.draw.GraphWindow):
 
     white = [1,1,1,1]
+    picked = None
 
-    def draw(self, g):
-        win = GraphWindow(g, g.pos, geometry=(800,600), vertex_text = g.txt, vertex_fill_color = self.white, vertex_halo = False, vertex_size = 20)
+    def __init__(self,g):
+        gt.draw.GraphWindow.__init__(self, g, g.pos, geometry=(800,600))
+
 
     def setTitle(self,title="nananna"):
         self.set_title(title)
-
-    picked = None
 
     def changeValues(self):
         if self.graph.picked is not None and self.graph.picked is not False and self.graph.picked is not self.picked:
@@ -21,7 +24,7 @@ class View(graph_tool.GraphWindow):
         return True
 
     def show(self):
-        cid = GObject.idle_add(self.changeValues)
+        # cid = GObject.idle_add(self.changeValues)
         self.connect("delete_event", Gtk.main_quit)
         self.show_all()
         Gtk.main()
