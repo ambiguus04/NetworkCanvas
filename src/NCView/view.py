@@ -6,8 +6,8 @@ class View(gt.draw.GraphWindow):
     white = [1,1,1,1]
     picked = None
 
-    def __init__(self,g):
-        gt.draw.GraphWindow.__init__(self, g, g.pos, geometry=(800,600))
+    def __init__(self,m):
+        gt.draw.GraphWindow.__init__(self, m.graph, m.pos, geometry=(800,600))
 
 
     def setTitle(self,title="nananna"):
