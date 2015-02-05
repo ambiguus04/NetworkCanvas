@@ -1,40 +1,57 @@
 from gi.repository import Gtk, Gdk
 from NCView import view
+# from NCController import controller
 
 class Window(Gtk.Window):
 
-    def __init__(self):
+    def __init__(self, controller):
+        self.controller = controller
         Gtk.Window.__init__(self, title="Network Canvas")
-
-        self.set_default_size(900,600)
-        # self.set_resizable(False)
+        self.set_default_size(900, 600)
         self.set_position(Gtk.WindowPosition.CENTER)
-        # self.set_border_width(10)
-        self.table = Gtk.Table(12,12,True)
-        # self.table.set_col_spacings(10)
-        # self.table.set_row_spacings(10)
-        self.add(self.table)
-        btn = []
-        btn.append(Gtk.Button(label="Button 1"))
-        btn.append(Gtk.Button(label="Button 2"))
-        btn.append(Gtk.Button(label="Button 3"))
-        btn.append(Gtk.Button(label="Button 4"))
-        # da = Gtk.DrawingArea()
-        # da.override_background_color(0,)
-        # self.table.attach(da,6,12,0,12)
-        for i in range(0,4):
-            self.table.attach(btn[i],i,i+1,0,1)
+        self.table = Gtk.Table(12, 6, True)
+        self.grid = Gtk.Table(1, 2, True) #main grid: left - buttons in table, right - drawing area
+        self.add(self.grid)
+        self.grid.attach(self.table, 0, 1, 0, 1)
+        self.create_btns()
+        self.clear_drawing_area()
 
-    def on_button_clicked(self, widget):
-        print("heelllo")
+    def create_btns(self):
+        self.create_btn_BA()
+        self.create_btn_ER()
+
+    def create_btn_BA(self):
+        self.btnBA = Gtk.Button(label="BA network")
+        self.btnBA.connect("clicked", self.on_BA_clicked)
+        self.table.attach(self.btnBA, 1, 2, 1, 2)
+
+    def create_btn_ER(self):
+        self.btnER = Gtk.Button(label="ER network")
+        self.btnER.connect("clicked", self.on_ER_clicked)
+        self.table.attach(self.btnER, 2, 3, 1, 2)
+
+    def on_BA_clicked(self, btn):
+        self.controller.clicked_BA()
+
+    def on_ER_clicked(self, btn):
+        self.controller.clicked_ER()
 
     def add_graph(self, m):
-        graph = view.View(m)
-        graph.set_size_request(400,300)
-        self.table.attach(graph,6,12,0,12)
+        self.da = view.View(m)
+        self.grid.attach(self.da, 1, 2, 0, 1)
 
+
+    def clear_drawing_area(self):
+        self.da = Gtk.DrawingArea()
+        color = Gdk.color_parse("#ffffff")
+        rgba = Gdk.RGBA.from_color(color)
+        self.da.override_background_color(0, rgba)
+        self.grid.attach(self.da, 1, 2, 0, 1)
 
     def show(self):
         self.connect("delete-event", Gtk.main_quit)
         self.show_all()
         Gtk.main()
+
+    def redraw(self):
+        self.show_all()
