@@ -1,6 +1,5 @@
 from NCModel import model
 from GView import window
-import graph_tool as gt
 
 class Controller:
 
@@ -29,3 +28,10 @@ class Controller:
 
     def get_edges(self):
         return self.m.get_edges()
+
+    def get_N(self):
+        return self.m.get_N()
+
+    def add_edge(self, v1, v2):
+        self.m.add_edge(v1, v2)
+        self.w.refresh()

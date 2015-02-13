@@ -47,3 +47,9 @@ class Model():
 
     def get_edges(self):
         return self.graph.edges()
+
+    def get_N(self):
+        return self.N
+
+    def add_edge(self, v1, v2):
+        self.graph.add_edge(v1, v2)

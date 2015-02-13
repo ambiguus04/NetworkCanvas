@@ -1,4 +1,3 @@
-from gi.repository import Gtk, Gdk, GdkPixbuf, GObject
 import graph_tool as gt
 
 class View(gt.draw.GraphWidget):
